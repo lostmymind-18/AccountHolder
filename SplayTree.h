@@ -5,7 +5,7 @@ using namespace std;
 template<class T>
 class SplayTree {
 private:
-	int size;
+	int count;
 	class Node
 	{
 	private:
@@ -14,17 +14,23 @@ private:
 		Node* leftChild;
 		Node* rightChild;
 	public:
-		Node(T data, Node* leftChild = NULL, Node* rightChild = NULL)
+		//Constructor
+		Node()
 		{
-			this->key = size + 1;
+		}
+		Node(T data, SplayTree* tree , Node* leftChild = NULL, Node* rightChild = NULL)
+		{
+			this->key = tree->count + 1;
 			this->data = data;
 			this->leftChild = leftChild;
 			this->rightChild = rightChild;
 		}
-		friend class Splaytree;
+		friend class SplayTree;
 	};
 	//Root for the tree
+private:
 	Node* root;
+	int recentKey = 0;
 	Node* rightRotation(Node* root)
 	{
 		Node* y = root->leftChild;
@@ -41,44 +47,44 @@ private:
 	}
 	void splay(Node* &root, int key)
 	{
-		this->key = key;
-		if (!root || root->key == this->key)
+		this->recentKey = key;
+		if (!root || root->key == this->recentKey)
 			return;
-		if (root->key > this->key)
+		if (root->key > this->recentKey)
 		{
 			if (!root->leftChild)
-				this->key = root->key;
-			splay(root->leftChild, this->key);
+				this->recentKey = root->key;
+			splay(root->leftChild, this->recentKey);
 		}
-		else if (root->key < this->key)
+		else if (root->key < this->recentKey)
 		{
 			if (!root->rightChild)
-				this->key = root->key;
-			splay(root->rightChild, this->key);
+				this->recentKey = root->key;
+			splay(root->rightChild, this->recentKey);
 		}
 		if (root == this->root)
 		{
-			if (root->leftChild && root->leftChild->key == this->key)
+			if (root->leftChild && root->leftChild->key == this->recentKey)
 				root = rightRotation(root);
-			else if (root->rightChild && root->rightChild->key == this->key)
+			else if (root->rightChild && root->rightChild->key == this->recentKey)
 				root = leftRotation(root);
 		}
-		if (root->leftChild !=NULL && root->leftChild->leftChild !=NULL && root->leftChild->leftChild->key == this->key)
+		if (root->leftChild !=NULL && root->leftChild->leftChild !=NULL && root->leftChild->leftChild->key == this->recentKey)
 		{
 			root = rightRotation(root);
 			root = rightRotation(root);
 		}
-		else if (root->leftChild!=NULL && root->leftChild->rightChild!=NULL && root->leftChild->rightChild->key == this->key)
+		else if (root->leftChild!=NULL && root->leftChild->rightChild!=NULL && root->leftChild->rightChild->key == this->recentKey)
 		{
 			root->leftChild = leftRotation(root->leftChild);
 			root = rightRotation(root);
 		}
-		else if (root->rightChild!=NULL && root->rightChild->leftChild!=NULL && root->rightChild->leftChild->key == this->key)
+		else if (root->rightChild!=NULL && root->rightChild->leftChild!=NULL && root->rightChild->leftChild->key == this->recentKey)
 		{
 			root->rightChild = rightRotation(root->rightChild);
 			root = leftRotation(root);
 		}
-		else if (root->rightChild!=NULL && root->rightChild->rightChild!=NULL &&root->rightChild->rightChild->key == this->key)
+		else if (root->rightChild!=NULL && root->rightChild->rightChild!=NULL &&root->rightChild->rightChild->key == this->recentKey)
 		{
 			root = leftRotation(root);
 			root = leftRotation(root);
@@ -88,7 +94,7 @@ private:
 	{
 		if (!root)
 		{
-			root = new Node(data);
+			root = new Node(data, this);
 			splay(this->root, root->key);
 			return;
 		}
@@ -108,25 +114,28 @@ private:
 		Print(root->rightChild);
 	}
 public:
-	Splaytree()
+	SplayTree()
 	{
-		size = 0;
+		count = 0;
 		root = NULL;
 	}
-	int key(T data, Node* a = this->root)
+	int key(T data, Node* a = NULL)
 	{
+		if(!a) a = this->root;
 		if(!a) return -1;
 		if(a->data == data) return a->key;
-		key(data, a->leftChild) >= 0 ? return key(data, a->leftChild) : return key(data, a -> rightChild);
+		if (key(data, a->leftChild) >= 0) return key(data, a->leftChild);
+		else return key(data, a -> rightChild);
 	}
-	void add(T data, int key = this->size + 1)
+	void add(T data)
 	{
-		Add(data,this->root);
-		this->size++;
+		int key = this->count + 1;
+		Add(data, key, this->root);
+		this->count++;
 	}
 	int size()
 	{
-		return this->size;
+		return this->count;
 	}
 	void remove(int key)
 	{
@@ -151,7 +160,7 @@ public:
 			splay(root, a->key);
 			root->rightChild = right;
 		}
-		this->size--;
+		this->count--;
 	}
 	void print()
 	{

@@ -1,16 +1,20 @@
 #include<iostream>
 #include<string.h>
+#include<fstream>
 #include "SplayTree.h"
 
 using namespace std;
-struct account{
-    string website;
-    string username;
-    int* password;
-};
+
 class AccountHolder{
     private:
+        struct account{
+            string website;
+            string username;
+            string password;
+        };
         SplayTree<account> holder;
+        void readFile(const char* fileName);
+        void writeFile(const char* fileName);
     public:
         bool add(account newAcc)
         {
@@ -27,8 +31,43 @@ class AccountHolder{
             }
             return false;
         }
+        void display()
+        {
+
+        }
+        AccountHolder()
+        {
+            readFile("data.txt");
+        }
+        ~AccountHolder()
+        {
+            writeFile("data.txt");
+        }
 };
-int main()
+void AccountHolder::readFile(const char* fileName)
 {
-    
+    ifstream in(fileName);
+    while(!in.eof())
+    {
+        account addAccount;
+        in>>addAccount.website;
+        in>>addAccount.username;
+        in>>addAccount.password;
+        add(addAccount);
+    }
+}
+void AccountHolder::writeFile(const char* fileName)
+{
+
+}
+int main(int argc, char* argv[])
+{
+    AccountHolder holder;
+    if(argc == 2)
+    {
+        if(argv[1] == "dis")
+        {
+            
+        }
+    }
 }
