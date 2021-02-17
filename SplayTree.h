@@ -1,5 +1,3 @@
-#include<iostream>
-using namespace std;
 #ifndef SPLAY_TREE
 #define SPLAY_TREE
 template<class T>
@@ -15,9 +13,7 @@ private:
 		Node* rightChild;
 	public:
 		//Constructor
-		Node()
-		{
-		}
+		Node(){}
 		Node(T data, SplayTree* tree , Node* leftChild = NULL, Node* rightChild = NULL)
 		{
 			this->key = tree->count + 1;
@@ -25,7 +21,6 @@ private:
 			this->leftChild = leftChild;
 			this->rightChild = rightChild;
 		}
-		friend class SplayTree;
 	};
 	//Root for the tree
 private:
@@ -113,6 +108,7 @@ private:
 		Print(root->leftChild);
 		Print(root->rightChild);
 	}
+	//check if data's already exist or not
 public:
 	SplayTree()
 	{
@@ -136,6 +132,17 @@ public:
 	int size()
 	{
 		return this->count;
+	}
+	T* search(int key, Node* root = NULL)
+	{
+		if(!root) throw"Not found";
+		if(root->key == key)
+		{
+			splay(this->root, key);
+			return &root->data;
+		}
+		if(key > root->key) return search(key, root->rightChild);
+		if(key < root->key) return search(key, root->leftChild);
 	}
 	void remove(int key)
 	{
