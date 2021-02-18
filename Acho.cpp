@@ -68,6 +68,7 @@ class AccountHolder{
             {
                 acc = holder.search(i);
                 display(acc);
+                cout<<"------------------------------------";
             }
             delete acc;
             acc = NULL;
@@ -102,7 +103,7 @@ int main(int argc, char* argv[])
     if(argc == 1) cout<<"Hello Dung, have a good time =))"<<endl;
     AccountHolder holder;
     //Display all accounts
-    if((string)argv[1] == "-dis")
+    if((string)argv[1] == "-ls")
     {
         holder.displayAll();
     }

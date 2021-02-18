@@ -1,3 +1,5 @@
+#include<iostream>
+using namespace std;
 #ifndef SPLAY_TREE
 #define SPLAY_TREE
 template<class T>
@@ -21,10 +23,12 @@ private:
 			this->leftChild = leftChild;
 			this->rightChild = rightChild;
 		}
+		friend class SplayTree;
 	};
 	//Root for the tree
 private:
 	Node* root;
+	Node* temp;
 	int recentKey = 0;
 	Node* rightRotation(Node* root)
 	{
@@ -98,42 +102,16 @@ private:
 		else
 			Add(data ,key, root->rightChild);
 	}
-	void Print(Node* root)
-	{
-		if (root == NULL)
-		{
-			return;
-		}
-		cout << root->key << " ";
-		Print(root->leftChild);
-		Print(root->rightChild);
-	}
 	//check if data's already exist or not
-public:
-	SplayTree()
+	int Key(T data, Node* a)
 	{
-		count = 0;
-		root = NULL;
-	}
-	int key(T data, Node* a = NULL)
-	{
-		if(!a) a = this->root;
-		if(!a) return -1;
+		if(!a) throw"Not found";
 		if(a->data == data) return a->key;
-		if (key(data, a->leftChild) >= 0) return key(data, a->leftChild);
-		else return key(data, a -> rightChild);
+		if (Key(data, a->leftChild) >= 0) return Key(data, a->leftChild);
+		else return Key(data, a -> rightChild);
 	}
-	void add(T data)
-	{
-		int key = this->count + 1;
-		Add(data, key, this->root);
-		this->count++;
-	}
-	int size()
-	{
-		return this->count;
-	}
-	T* search(int key, Node* root = NULL)
+	//Search from key
+	T* Search(int key, Node* root)
 	{
 		if(!root) throw"Not found";
 		if(root->key == key)
@@ -141,8 +119,38 @@ public:
 			splay(this->root, key);
 			return &root->data;
 		}
-		if(key > root->key) return search(key, root->rightChild);
-		if(key < root->key) return search(key, root->leftChild);
+		if(key > root->key) return Search(key, root->rightChild);
+		if(key < root->key) return Search(key, root->leftChild);
+	}
+public:
+	SplayTree()
+	{
+		count = 0;
+		root = NULL;
+	}
+	int findKey(T data)
+	{
+		return Key(data, this->root);
+	}
+	void add(T data)
+	{
+		int key = this->count + 1;
+		try{
+			findKey(data);
+			throw "Cannot";
+		}
+		catch(...){
+			Add(data, key, this->root);
+			this->count++;
+		}
+	}
+	int size()
+	{
+		return this->count;
+	}
+	T* search(int key)
+	{
+		return Search(key, this->root);
 	}
 	void remove(int key)
 	{
@@ -168,10 +176,6 @@ public:
 			root->rightChild = right;
 		}
 		this->count--;
-	}
-	void print()
-	{
-		Print(root);
 	}
 };
 #endif
