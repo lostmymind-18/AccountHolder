@@ -23,6 +23,10 @@ private:
 			this->leftChild = leftChild;
 			this->rightChild = rightChild;
 		}
+		~Node()
+		{
+			cout<<"Destroy data";
+		}
 		friend class SplayTree;
 	};
 	//Root for the tree
@@ -122,6 +126,13 @@ private:
 		if(key > root->key) return Search(key, root->rightChild);
 		if(key < root->key) return Search(key, root->leftChild);
 	}
+	void afterRemove(Node* root)
+	{
+		if(!root) return;
+		root->key--;
+		afterRemove(root->rightChild);
+		afterRemove(root->leftChild);
+	}
 public:
 	SplayTree()
 	{
@@ -160,6 +171,7 @@ public:
 			cout << "Not found" << endl;
 			return;
 		}
+		afterRemove(this->root->rightChild);
 		Node* left = this->root->leftChild;
 		Node* right = this->root->rightChild;
 		delete(this->root);
