@@ -3,11 +3,10 @@
 * [Technologies](#technologies)
 
 ## General info
-Use for:
-### Simple console application
-### Apply Splay-tree knowledge
-### Store complex passwords.
-### With severals functions: Add, remove, change password, search for password.
-## Technologies
+# Simple console application
+# Apply Splay-tree knowledge
+# Store complex passwords.
+# With severals functions: Add, remove, change password, search for password.
+# Technologies
 Project is created with:
 * C++
