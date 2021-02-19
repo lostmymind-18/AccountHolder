@@ -1,3 +1,10 @@
-# AccountHolder
-Store password of accounts locally
-A simple console application storing your accounts and passwords conveniently.
+## Table of contents
+* [General info](#general-info)
+* [Technologies](#technologies)
+
+## General info
+This project is simple console application implement Splay-tree data structure to store accounts' password.
+	
+## Technologies
+Project is created with:
+* C++
