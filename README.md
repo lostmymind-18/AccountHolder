@@ -3,8 +3,11 @@
 * [Technologies](#technologies)
 
 ## General info
-This project is simple console application implement Splay-tree data structure to store accounts' password.
-	
+Use for:
+### Simple console application
+### Apply Splay-tree knowledge
+### Store complex passwords.
+### With severals functions: Add, remove, change password, search for password.
 ## Technologies
 Project is created with:
 * C++
