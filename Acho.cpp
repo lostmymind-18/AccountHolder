@@ -55,6 +55,7 @@ class AccountHolder{
         }
         void search(vector<account*>& vector, string website = "*", string username = "*")
         {
+            //Return all user name of a website
             if(website != "*" && username == "*")
             {
                 account* a;
@@ -66,6 +67,7 @@ class AccountHolder{
                 }
                 if(vector.size() == 0) throw"not found";
             }
+            //return all website of username
             if(website == "*" && username != "*")
             {
                 account* a;
@@ -76,6 +78,14 @@ class AccountHolder{
                         vector.push_back(a);
                 }
                 if(vector.size() == 0) throw"not found";
+            }
+            //return all accounts
+            if(website == "*" && username == "*")
+            {
+                for(int i = 1; i <= holder.size(); i ++)
+                {
+                    vector.push_back(holder.search(i));
+                }
             }
             if(website != "*" && username != "*")
             {
@@ -93,7 +103,7 @@ class AccountHolder{
         {
             cout<<"website: "<<acc->website<<endl;
             cout<<"username: "<<acc->username<<endl;
-            cout<<"password: "<<acc->username<<endl; 
+            cout<<"password: "<<acc->password<<endl; 
             cout<<"------------------------------------"<<endl;
         }
         void displayAll()
